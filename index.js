@@ -1,6 +1,7 @@
 import Koa from 'koa'
 import { setFinalResponseMdw, setResponseTimeMdw } from './middlewares.js'
 import Router from 'koa-router'
+import { UserRepository } from './database/UserRepository.js'
 
 const app = new Koa()
 const router = new Router()
@@ -12,8 +13,9 @@ app
   .use(router.routes())
   .use(router.allowedMethods())
 
-router.get('/user', (ctx, next) => {
-  ctx.body = { ok: true, message: 'Hola GET' }
+router.get('/user', async (ctx, next) => {
+  const responseDB = await UserRepository.getUsers()
+  ctx.body = { ok: true, message: responseDB }
 })
 
 router.post('/user', (ctx, next) => {
