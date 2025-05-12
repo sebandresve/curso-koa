@@ -14,9 +14,15 @@ app
   .use(router.routes())
   .use(router.allowedMethods())
 
+router.get('/user/:id', async (ctx, next) => {
+  const id = ctx.params.id
+  const user = await UserRepository.getUserById(id)
+  ctx.body = { ok: true, user }
+})
+
 router.get('/user', async (ctx, next) => {
-  const responseDB = await UserRepository.getUsers()
-  ctx.body = { ok: true, message: responseDB }
+  const users = await UserRepository.getUsers()
+  ctx.body = { ok: true, users }
 })
 
 router.post('/user', async (ctx, next) => {
@@ -26,12 +32,17 @@ router.post('/user', async (ctx, next) => {
   ctx.body = { ok: true, userSaved }
 })
 
-router.put('/user', (ctx, next) => {
-  ctx.body = { ok: true, message: 'Hola PUT' }
+router.put('/user/:id', async (ctx, next) => {
+  const id = ctx.params.id
+  const { name, email, password } = ctx.request.body
+  const userUpdated = await UserRepository.updateUser({ id, name, email, password })
+  ctx.body = { ok: true, userUpdated }
 })
 
-router.delete('/user', (ctx, next) => {
-  ctx.body = { ok: true, message: 'Hola DELETE' }
+router.delete('/user/:id', async (ctx, next) => {
+  const id = ctx.params.id
+  const userDeleted = await UserRepository.deleteUser(id)
+  ctx.body = { ok: true, userDeleted }
 })
 
 app.listen(3000, () => console.log('Server running on http://localhost:3000'))
