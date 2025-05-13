@@ -13,6 +13,13 @@ async function getUserById (id) {
   return res[0]
 }
 
+async function getUserByEmail (email) {
+  const query = 'SELECT * FROM users WHERE email = $1'
+  const params = [email]
+  const res = await executeQuery(query, params)
+  return res[0]
+}
+
 async function createUser ({ name, email, password }) {
   const query = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *'
   const params = [name, email, password]
@@ -41,6 +48,7 @@ async function deleteUser (id) {
 export const UserRepository = {
   getUsers,
   getUserById,
+  getUserByEmail,
   createUser,
   updateUser,
   deleteUser
