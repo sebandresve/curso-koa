@@ -18,7 +18,8 @@
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.16.1",
     "koa-router": "^13.0.1",
-    "pg": "^8.15.6"
+    "pg": "^8.15.6",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "standard": "^17.1.2"
